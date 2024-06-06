@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 @Table(name = "members")
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private int memberId;
 
@@ -42,9 +43,8 @@ public class Member {
 
     }
 
-    public Member(int memberId, String memberName, String memberAddress, String memberTel,
+    public Member(String memberName, String memberAddress, String memberTel,
                   String memberEmail, String memberBirth, String memberJoin, String memberPass) {
-        this.memberId = memberId;
         this.memberName = memberName;
         this.memberAddress = memberAddress;
         this.memberTel = memberTel;

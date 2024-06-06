@@ -65,7 +65,6 @@ public class MemberController {
     // 新規登録メソッド
     @RequestMapping("/add")
     public ModelAndView add(
-            @RequestParam("memberId") int memberId,
             @RequestParam("memberName") String memberName,
             @RequestParam("memberAddress") String memberAddress,
             @RequestParam("memberTel") String memberTel,
@@ -75,25 +74,22 @@ public class MemberController {
             ModelAndView mv) {
 
         Member memberE = memberRepository.findByMemberEmail(memberEmail);
-        Member memberI = memberRepository.findByMemberId(memberId);
         Date date = new Date(); // 今日の日付
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = dateFormat.format(date);
 
-        if ( memberId == 0 || memberName.isEmpty() || memberAddress.isEmpty() || memberTel.isEmpty()
+        if ( memberName.isEmpty() || memberAddress.isEmpty() || memberTel.isEmpty()
           || memberEmail.isEmpty() || memberBirth.isEmpty() || memberPass.isEmpty()) {
             mv.addObject("errorMsg", "未入力の項目があります。");
         } else if (memberE != null) {
             mv.addObject("errorMsg", "メールアドレスが既に登録されています。");
-        } else if (memberI!= null) {
-            mv.addObject("errorMsg", "会員IDが既に登録されています。");
         } else {
-            memberRepository.save(new Member(memberId, memberName, memberAddress, memberTel,
+            memberRepository.save(new Member(memberName, memberAddress, memberTel,
                                             memberEmail, memberBirth, strDate, memberPass));
             mv.addObject("member", memberRepository.findAll());
             mv.addObject("addOk", "新規登録が完了しました。");
         }
-        mv.setViewName(memberE != null && memberI != null? "addUser" : "login");
+        mv.setViewName(memberE != null ? "addUser" : "login");
         return mv;
     }
 }
