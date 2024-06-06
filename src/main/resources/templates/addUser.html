@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>新規登録</title>
+</head>
+<body>
+    <form action="/"><input type="submit" value="戻る"></form>
+
+	<h1>新規登録</h1>
+
+    <span style="color:red;" th:text="${errorMsg}"></span>
+    <form action="/add" method="POST">
+    <p>
+        ID(※半角数字)：<input type="number" name="memberId" value="0" >
+    </p>
+
+    <p>
+        名前：<input type="text" name="memberName" >
+    </p>
+
+    <p>
+        住所：<input type="text" name="memberAddress">
+    </p>
+
+    <p>
+        電話番号：<input type="tel" name="memberTel">
+    </p>
+
+    <p>
+        メールアドレス：<input type="email" name="memberEmail">
+    </p>
+
+    <p>
+        誕生日：<input type="text" name="memberBirth">
+    </p>
+
+    <p>
+        パスワード：<input type="text" name="memberPass">
+    </p>
+    <form action="/"><input type="submit" value="登録"></form>
+
+    </form>
+</body>
+</html>
