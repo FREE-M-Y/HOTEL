@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ログイン</title>
+</head>
+
+<body>
+
+    <h1>会員削除</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <table border="1">
+        <tr>
+            <th>会員ID</th><th>氏名</th><th>住所</th><th>電話番号</th><th>E-Mail</th><th>生年月日</th>
+            <th>入会年月日</th><th>退会年月日</th>
+        </tr>
+        <tr>
+            <td th:text="${member.memberId}"></td>
+            <td th:text="${member.memberName}"></td>
+            <td th:text="${member.memberAddress}"></td>
+            <td th:text="${member.memberTel}"></td>
+            <td th:text="${member.memberEmail}"></td>
+            <td th:text="${member.memberBirth}"></td>
+            <td th:text="${member.memberJoin}"></td>
+            <td th:text="${member.memberWithdrawal}"></td>
+            <td>
+            <form action="/removeM" method="post">
+                <input type="hidden" name="memberId" th:value="${member.memberId}">
+                <input type="submit" value="退会">
+            </form>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

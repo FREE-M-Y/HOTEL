@@ -54,6 +54,10 @@ public class Member {
         this.memberPass = memberPass;
     }
 
+    public void setMemberWithdrawal(String memberWithdrawal) {
+        this.memberWithdrawal = memberWithdrawal;
+    }
+
     public int getMemberId() {
         return memberId;
     }

@@ -2,6 +2,7 @@ package com.example.hotel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class MemberController {
@@ -44,12 +46,19 @@ public class MemberController {
         } else if (memberEmail.equals("admin@adimin") && memberPass.equals("0")) {
             //管理者ログイン
             mv.setViewName("admin");
+            List<Member> memberList = memberRepository.findAll();
+            mv.addObject("memberList", memberList);
         } else {
-            session.setAttribute("memberPass", member);
-            mv.addObject("member", session.getAttribute("memberPass"));
-            //List<Hotel> hotel = hotelRepository.findAll();
-            //mv.addObject("hotelList", hotel);
-            mv.setViewName("lodging");
+            if (member.getMemberWithdrawal() != null) {
+                mv.addObject("errorMsg", "退会済みの会員です。");
+                mv.setViewName("login");
+            } else {
+                session.setAttribute("memberPass", member);
+                mv.addObject("member", session.getAttribute("memberPass"));
+                //List<Hotel> hotel = hotelRepository.findAll();
+                //mv.addObject("hotelList", hotel);
+                mv.setViewName("lodging");
+            }
         }
 
         return mv;
@@ -73,15 +82,15 @@ public class MemberController {
             @RequestParam("memberPass") String memberPass,
             ModelAndView mv) {
 
-        Member memberE = memberRepository.findByMemberEmail(memberEmail);
+        Member member = memberRepository.findByMemberEmail(memberEmail);
         Date date = new Date(); // 今日の日付
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String strDate = dateFormat.format(date);
 
         if ( memberName.isEmpty() || memberAddress.isEmpty() || memberTel.isEmpty()
           || memberEmail.isEmpty() || memberBirth.isEmpty() || memberPass.isEmpty()) {
             mv.addObject("errorMsg", "未入力の項目があります。");
-        } else if (memberE != null) {
+        } else if (member != null) {
             mv.addObject("errorMsg", "メールアドレスが既に登録されています。");
         } else {
             memberRepository.save(new Member(memberName, memberAddress, memberTel,
@@ -89,7 +98,43 @@ public class MemberController {
             mv.addObject("member", memberRepository.findAll());
             mv.addObject("addOk", "新規登録が完了しました。");
         }
-        mv.setViewName(memberE != null ? "addUser" : "login");
+        mv.setViewName(member != null ? "addUser" : "login");
         return mv;
     }
+
+    /***********管理者ログイン******************/
+    //removeMember.html表示用メソッド
+    @RequestMapping("removeMember")
+    public ModelAndView removeMember(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        if (memberId == 1) {
+            mv.addObject("errorMsg", "管理用アカウントは退会できません。");
+            mv.setViewName("admin");
+        } else {
+            mv.addObject("member", memberRepository.findByMemberId(memberId));
+            mv.setViewName("removeMember");
+        }
+        return mv;
+    }
+    //会員削除メソッド
+    @RequestMapping("removeM")
+    public ModelAndView removeM(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        Member member = memberRepository.findByMemberId(memberId);
+        Date date = new Date(); // 今日の日付
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String strDate = dateFormat.format(date);
+        
+        member.setMemberWithdrawal(strDate);
+        memberRepository.save(member);
+
+        mv.addObject("member", memberRepository.findAll());
+        mv.setViewName("admin");
+        return mv;
+    }
+    
 }
