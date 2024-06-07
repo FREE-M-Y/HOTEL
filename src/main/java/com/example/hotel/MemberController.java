@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -124,17 +125,55 @@ public class MemberController {
         @RequestParam("memberId") int memberId,
         ModelAndView mv ) {
 
-        Member member = memberRepository.findByMemberId(memberId);
+        List<Member> member = memberRepository.findByMemberId(memberId);
         Date date = new Date(); // 今日の日付
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         String strDate = dateFormat.format(date);
         
-        member.setMemberWithdrawal(strDate);
-        memberRepository.save(member);
+        member.get(0).setMemberWithdrawal(strDate);
+        memberRepository.save(member.get(0));
 
         mv.addObject("member", memberRepository.findAll());
         mv.setViewName("admin");
         return mv;
     }
-    
+
+    // 会員検索メソッド
+    @RequestMapping("/findMember")
+    public ModelAndView findMember(
+        @RequestParam(name = "serchCode", defaultValue = "0") int serchCode,
+        @RequestParam("freeword") String freeWord,
+        ModelAndView mv) {
+
+        if (freeWord.equals("")){
+            List<Member> memberList = (List<Member>) memberRepository.findAll();
+            mv.addObject("memberList", memberList);
+        } else {
+            switch (serchCode) {
+            case 0:
+            try {
+                int memberId = Integer.parseInt(freeWord);
+                List<Member> memberList = memberRepository.findByMemberId(memberId);
+                mv.addObject("memberList", memberList);
+            } catch (NumberFormatException e) {
+                mv.addObject("errorMsg", "整数を入力してください。");
+            }
+                break;
+            case 1:
+                List<Member> memberName = memberRepository.findByMemberNameLike("%" + freeWord + "%");
+                mv.addObject("memberList", memberName);
+                break;
+            case 2:
+                List<Member> memberAddress = memberRepository.findByMemberAddressLike("%" + freeWord + "%");
+                mv.addObject("memberList", memberAddress);
+                break;
+            default:
+                List<Member> memberList2 = (List<Member>) memberRepository.findAll();
+                mv.addObject("memberList", memberList2);
+            }
+        }
+
+        mv.setViewName("admin");
+        return mv;
+    }
 }
