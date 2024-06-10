@@ -54,6 +54,16 @@ public class Member {
         this.memberPass = memberPass;
     }
 
+    public void setUpdateMember(String memberName, String memberAddress, String memberTel,
+                  String memberEmail, String memberBirth, String memberPass) {
+        this.memberName = memberName;
+        this.memberAddress = memberAddress;
+        this.memberTel = memberTel;
+        this.memberEmail = memberEmail;
+        this.memberBirth = memberBirth;
+        this.memberPass = memberPass;
+    }
+
     public void setMemberWithdrawal(String memberWithdrawal) {
         this.memberWithdrawal = memberWithdrawal;
     }

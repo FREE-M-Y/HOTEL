@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +84,7 @@ public class MemberController {
 
         Member member = memberRepository.findByMemberEmail(memberEmail);
         Date date = new Date(); // 今日の日付
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
         String strDate = dateFormat.format(date);
 
         if ( memberName.isEmpty() || memberAddress.isEmpty() || memberTel.isEmpty()
@@ -104,14 +103,31 @@ public class MemberController {
     }
 
     /***********管理者ログイン******************/
+    //admin.html表示用メソッド
+    @RequestMapping("admin")
+    public ModelAndView admin(
+        ModelAndView mv ) {
+        
+        mv.addObject("memberList", memberRepository.findAll());
+        mv.setViewName("admin");
+        return mv;
+    }
+
     //removeMember.html表示用メソッド
     @RequestMapping("removeMember")
     public ModelAndView removeMember(
         @RequestParam("memberId") int memberId,
         ModelAndView mv ) {
 
+        List<Member> member = memberRepository.findByMemberId(memberId);
+
         if (memberId == 1) {
             mv.addObject("errorMsg", "管理用アカウントは退会できません。");
+            mv.addObject("memberList", memberRepository.findAll());
+            mv.setViewName("admin");
+        } else if (member.get(0).getMemberWithdrawal() != null) {
+            mv.addObject("errorMsg", "退会済みのアカウントです。");
+            mv.addObject("memberList", memberRepository.findAll());
             mv.setViewName("admin");
         } else {
             mv.addObject("member", memberRepository.findByMemberId(memberId));
@@ -119,6 +135,7 @@ public class MemberController {
         }
         return mv;
     }
+
     //会員削除メソッド
     @RequestMapping("removeM")
     public ModelAndView removeM(
@@ -127,13 +144,13 @@ public class MemberController {
 
         List<Member> member = memberRepository.findByMemberId(memberId);
         Date date = new Date(); // 今日の日付
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
         String strDate = dateFormat.format(date);
         
         member.get(0).setMemberWithdrawal(strDate);
         memberRepository.save(member.get(0));
 
-        mv.addObject("member", memberRepository.findAll());
+        mv.addObject("memberList", memberRepository.findAll());
         mv.setViewName("admin");
         return mv;
     }
@@ -174,6 +191,69 @@ public class MemberController {
         }
 
         mv.setViewName("admin");
+        return mv;
+    }
+
+    //updateMember.html表示用メソッド
+    @RequestMapping("updateMember")
+    public ModelAndView updateMember(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        Member member = memberRepository.findByMemberId(memberId).get(0);
+
+        if (member.getMemberWithdrawal() != null) {
+            mv.addObject("errorMsg", "退会済みのアカウントです。");
+            mv.addObject("memberList", memberRepository.findAll());
+            mv.setViewName("admin");
+        } else {
+            mv.addObject("member", member);
+            mv.setViewName("updateMember");
+        }
+        return mv;
+    }
+
+    //会員情報更新メソッド
+    @RequestMapping("updateM")
+    public ModelAndView updateM(
+        @RequestParam("memberId") int memberId,
+        @RequestParam("memberName") String memberName,
+        @RequestParam("memberAddress") String memberAddress,
+        @RequestParam("memberTel") String memberTel,
+        @RequestParam("memberEmail") String memberEmail,
+        @RequestParam("memberBirth") String memberBirth,
+        @RequestParam("memberPass") String memberPass,
+        ModelAndView mv ) {
+
+        Member member = memberRepository.findByMemberId(memberId).get(0);
+        
+        if ( memberName.isEmpty() || memberAddress.isEmpty() || memberTel.isEmpty()
+            || memberEmail.isEmpty() || memberBirth.isEmpty() || memberPass.isEmpty()) {
+            mv.addObject("errorMsg", "未入力の項目があります。");
+            mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+            mv.setViewName("updateMember");
+        } else {
+            if (!(member.getMemberEmail().equals(memberEmail))) {
+                Member memberEm = memberRepository.findByMemberEmail(memberEmail);
+                if (memberEm != null) {
+                    mv.addObject("errorMsg", "メールアドレスが既に登録されています。");
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                    mv.setViewName("updateMember");
+                } else {
+                    member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
+                    memberRepository.save(member);
+                    mv.addObject("errorMsg", "更新が完了しました。");
+                    mv.addObject("memberList", memberRepository.findAll());
+                    mv.setViewName("admin");    
+                }
+            } else {
+                member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
+                memberRepository.save(member);
+                mv.addObject("errorMsg", "更新が完了しました。");
+                mv.addObject("memberList", memberRepository.findAll());
+                mv.setViewName("admin");
+            }
+        }
         return mv;
     }
 }
