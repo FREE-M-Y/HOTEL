@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ログイン</title>
+</head>
+
+<body>
+
+    <p><a href="/">ログアウト</a> <a href="/addHotel">宿新規登録</a> <a href="/admin">会員情報管理</a></p>
+
+    <h1>会員一覧</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+
+    <form action="/findhotel" method="POST">
+        <select name="serchCode">
+            <option value="0">シティホテル</option>
+            <option value="1">リゾートホテル</option>
+            <option value="2">ビジネスホテル</option>
+            <option value="3">旅館</option>
+            <option value="4">民宿</option>
+            <option value="5">ペンション</option>
+        </select>
+        <input type="text" name="freeword">
+        <p><input type="submit" value="検索"></p>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>宿ID</th><th>宿名</th><th>分類コード</th><th>住所</th><th>チェックイン</th><th>チェックアウト</th>
+        </tr>
+        <tr th:each="hotel:${hotelList}">
+            <td th:text="${hotel.hotelId}"></td>
+            <td th:text="${hotel.hotelName}"></td>
+            <td th:text="${hotel.categoryCode}"></td>
+            <td th:text="${hotel.hotelAddress}"></td>
+            <td th:text="${hotel.hotelCheckin}"></td>
+            <td th:text="${hotel.hotelCheckout}"></td>
+            <td>
+                <form action="/updateHotel" method="post">
+                    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+                    <input type="submit" value="更新">
+                </form>
+            </td>
+            <td>
+                <form action="/removeHotel" method="post">
+                    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+                    <input type="submit" value="削除">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
