@@ -41,6 +41,16 @@ public class Hotel {
         this.hotelCheckout = hotelCheckout;
     }
 
+    public void setUpdateHotel(String hotelId, String hotelName, int categoryCode,
+                  String hotelAddress, String hotelCheckin, String hotelCheckout) {
+        this.hotelId = hotelId;
+        this.hotelName = hotelName;
+        this.categoryCode = categoryCode;
+        this.hotelAddress = hotelAddress;
+        this.hotelCheckin = hotelCheckin;
+        this.hotelCheckout = hotelCheckout;
+    }
+
     public String getHotelId() {
         return hotelId;
     }
@@ -49,7 +59,7 @@ public class Hotel {
         return hotelName;
     }
 
-    public int getCtegoryCode() {
+    public int getCategoryCode() {
         return categoryCode;
     }
 

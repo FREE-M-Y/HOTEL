@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ログイン</title>
+</head>
+<body>
+    <form action="adminHotel"><input type="submit" value="戻る"></form>
+
+	<h1>宿情報更新</h1>
+
+    <span style="color:red;" th:text="${errorMsg}"></span>
+    <form action="/updateH" method="POST">
+
+    <p>
+        宿ID：<input type="text" name="hotelId" th:value="${hotel.hotelId}" readonly>
+    </p>
+
+    <p>
+        宿名：<input type="text" name="hotelName" th:value="${hotel.hotelName}">
+    </p>
+
+    <p>
+        カテゴリーコード：<input type="number" name="categoryCode" th:value="${hotel.categoryCode}">
+    </p>
+
+    <p>
+        宿住所：<input type="text" name="hotelAddress" th:value="${hotel.hotelAddress}">
+    </p>
+
+    <p>
+        チェックイン時間：<input type="text" name="hotelCheckin" th:value="${hotel.hotelCheckin}">
+    </p>
+
+    <p>
+        チェックアウト時間：<input type="text" name="hotelCheckout" th:value="${hotel.hotelCheckout}">
+    </p>
+    <input type="submit" value="更新">
+
+    </form>
+</body>
+</html>

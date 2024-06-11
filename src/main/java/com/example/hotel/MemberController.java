@@ -43,7 +43,7 @@ public class MemberController {
         } else if (Objects.isNull(member)) {
             mv.addObject("errorMsg", "メールアドレスかパスワードが正しくありません。");
             mv.setViewName("login");
-        } else if (memberEmail.equals("admin@adimin") && memberPass.equals("0")) {
+        } else if (member.getMemberId() == 1) {
             //管理者ログイン
             mv.setViewName("admin");
             List<Member> memberList = memberRepository.findAll();

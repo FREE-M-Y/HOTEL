@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ログイン</title>
+</head>
+
+<body>
+
+    <form action="adminHotel"><input type="submit" value="戻る"></form>
+
+    <h1>宿情報削除</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <table border="1">
+        <tr>
+            <th>宿ID</th><th>宿名</th><th>分類コード</th><th>住所</th><th>チェックイン</th><th>チェックアウト</th>
+        </tr>
+        <tr>
+            <td th:text="${hotel.hotelId}"></td>
+            <td th:text="${hotel.hotelName}"></td>
+            <td th:text="${hotel.categoryCode}"></td>
+            <td th:text="${hotel.hotelAddress}"></td>
+            <td th:text="${hotel.hotelCheckin}"></td>
+            <td th:text="${hotel.hotelCheckout}"></td>
+        </tr>
+    </table>
+    <form action="/removeH" method="post">
+        <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+        <input type="submit" value="削除">
+    </form>
+
+</body>
+
+</html>

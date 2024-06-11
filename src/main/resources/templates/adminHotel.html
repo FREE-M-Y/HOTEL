@@ -10,20 +10,21 @@
 
     <p><a href="/">ログアウト</a> <a href="/addHotel">宿新規登録</a> <a href="/admin">会員情報管理</a></p>
 
-    <h1>会員一覧</h1>
+    <h1>宿一覧</h1>
     <span style="color:red;" th:text="${errorMsg}"></span>
 
 
-    <form action="/findhotel" method="POST">
+    <form action="/findHotel" method="POST">
         <select name="serchCode">
-            <option value="0">シティホテル</option>
-            <option value="1">リゾートホテル</option>
-            <option value="2">ビジネスホテル</option>
-            <option value="3">旅館</option>
-            <option value="4">民宿</option>
-            <option value="5">ペンション</option>
+            <option value="0">カテゴリーを選択</option>
+            <option value="1">シティホテル</option>
+            <option value="2">リゾートホテル</option>
+            <option value="3">ビジネスホテル</option>
+            <option value="4">旅館</option>
+            <option value="5">民宿</option>
+            <option value="6">ペンション</option>
         </select>
-        <input type="text" name="freeword">
+        <input type="text" name="freeWord">
         <p><input type="submit" value="検索"></p>
     </form>
 
