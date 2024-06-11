@@ -1,7 +1,21 @@
 package com.example.hotel;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+@Repository
 public interface HotelRepository extends JpaRepository<Hotel, String> {
     
+    List<Hotel> findByHotelId(String hotelId);
+    Hotel findByHotelName(String hotelName);
+    List<Hotel> findByCategoryCode(int categoryCode);
+    List<Hotel> findByCategoryCodeAndHotelNameLike(int categoryCode, String HotelName);
+    List<Hotel> findByHotelNameLike(String HotelName);
+    List<Hotel> findByHotelIdOrHotelName(String hotelId, String hotelname);
+
+    @Transactional
+    void deleteByHotelId(String hotelId);
 }
