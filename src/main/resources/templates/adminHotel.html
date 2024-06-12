@@ -8,7 +8,8 @@
 
 <body>
 
-    <p><a href="/">ログアウト</a> <a href="/addHotel">宿新規登録</a> <a href="/admin">会員情報管理</a></p>
+    <p><a href="/">ログアウト</a> <a href="/addHotel">宿新規登録</a> <a href="/admin">会員情報管理</a>
+       <a href="adminPlanType">プラン情報管理</a></p>
 
     <h1>宿一覧</h1>
     <span style="color:red;" th:text="${errorMsg}"></span>
@@ -43,6 +44,12 @@
                 <form action="/updateHotel" method="post">
                     <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
                     <input type="submit" value="更新">
+                </form>
+            </td>
+            <td>
+                <form action="/addHotelPlan" method="post">
+                    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+                    <input type="submit" value="プラン登録">
                 </form>
             </td>
             <td>
