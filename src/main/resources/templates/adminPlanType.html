@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>管理者ログイン</title>
+</head>
+
+<body>
+
+    <p><a href="/">ログアウト</a> <a href="/adminHotel">宿情報管理</a> <a href="/admin">会員情報管理</a>
+        <a href="/addPlanType">プラン登録</a></p>
+
+    <h1>プラン一覧</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <table border="1">
+        <tr>
+            <th>プランタイプID</th><th>プラン名</th>
+        </tr>
+        <tr th:each="plan:${planTypeList}">
+            <td th:text="${plan.planTypeId}"></td>
+            <td th:text="${plan.planName}"></td>
+            <td>
+                <form action="/updatePlanType" method="post">
+                    <input type="hidden" name="planTypeId" th:value="${plan.planTypeId}">
+                    <input type="submit" value="更新">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

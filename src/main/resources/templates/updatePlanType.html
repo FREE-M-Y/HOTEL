@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ログイン</title>
+</head>
+<body>
+    <form action="adminPlanType"><input type="submit" value="戻る"></form>
+
+	<h1>プランタイプ更新</h1>
+
+    <span style="color:red;" th:text="${errorMsg}"></span>
+    <form action="/updatePT" method="POST">
+
+    <p>
+        プランタイプID：<input type="number" name="planTypeId" th:value="${planType.planTypeId}" readonly>
+    </p>
+
+    <p>
+        プラン名：<input type="text" name="planName" th:value="${planType.planName}">
+    </p>
+
+    <input type="submit" value="更新">
+
+    </form>
+</body>
+</html>
