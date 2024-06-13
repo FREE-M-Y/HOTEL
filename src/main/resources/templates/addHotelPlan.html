@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ログイン</title>
+</head>
+<body>
+    <form action="adminHotel"><input type="submit" value="戻る"></form>
+
+	<h1>宿プラン登録</h1>
+
+    <span style="color:red;" th:text="${errorMsg}"></span>
+    <form action="/addHP" method="POST">
+
+    <p>
+        プランID：<input type="number" name="planId" value="0">
+    </p>
+
+    <p>
+        宿ID：<input type="text" name="hotelId" th:value="${hotelId}" readonly>
+    </p>
+
+    <p>
+        プランタイプID：<input type="number" name="planTypeId" value="0">
+    </p>
+
+    <p>
+        金額：<input type="number" name="planPrice" value="0" min="0">
+    </p>
+
+    <p>
+        部屋数：<input type="number" name="planRoomCount" value="0">
+    </p>
+
+    <p>
+        備考：<input type="text" name="planDescription">
+    </p>
+
+    <input type="submit" value="登録">
+
+    </form>
+</body>
+</html>

@@ -14,9 +14,13 @@ public class HotelController {
     @Autowired
     HotelRepository hotelRepository;
 
+    @Autowired
+    PlanRepository planRepository;
+
     //宿情報一覧表示用メソッド
     @RequestMapping("/adminHotel")
     public ModelAndView adminHotel(ModelAndView mv) {
+        mv.addObject("planList", planRepository.findAll());
         mv.addObject("hotelList", hotelRepository.findAll());
         mv.setViewName("adminHotel");
         return mv;

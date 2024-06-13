@@ -14,11 +14,15 @@ public class PlanTypeController {
     @Autowired
     PlanTypeRepository planTypeRepository;
 
+    @Autowired
+    PlanRepository planRepository;
+
     //プラン情報一覧表示用メソッド
     @RequestMapping("adminPlanType")
     public ModelAndView adminPlanType(
         ModelAndView mv ) {
             mv.addObject("planTypeList", planTypeRepository.findAll());
+            mv.addObject("planList", planRepository.findAll());
             mv.setViewName("adminPlanType");
             return mv;
     }
