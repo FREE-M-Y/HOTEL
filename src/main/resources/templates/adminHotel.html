@@ -32,6 +32,7 @@
     <table border="1">
         <tr>
             <th>宿ID</th><th>宿名</th><th>分類コード</th><th>住所</th><th>チェックイン</th><th>チェックアウト</th>
+            <th>プランID</th>
         </tr>
         <tr th:each="hotel:${hotelList}">
             <td th:text="${hotel.hotelId}"></td>
@@ -40,10 +41,23 @@
             <td th:text="${hotel.hotelAddress}"></td>
             <td th:text="${hotel.hotelCheckin}"></td>
             <td th:text="${hotel.hotelCheckout}"></td>
+                    <td>
+                        <span th:each="plan:${planList}">
+                            <span th:if="${hotel.hotelId == plan.hotelId && #strings.isEmpty(plan.planDeleteDate)}"
+                                  th:text="${plan.planId}">
+                            </span><br>
+                        </span>
+                    </td>
             <td>
                 <form action="/updateHotel" method="post">
                     <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
                     <input type="submit" value="更新">
+                </form>
+            </td>
+            <td>
+                <form action="/removeHotel" method="post">
+                    <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+                    <input type="submit" value="削除">
                 </form>
             </td>
             <td>
@@ -53,9 +67,9 @@
                 </form>
             </td>
             <td>
-                <form action="/removeHotel" method="post">
+                <form action="/editHotelPlan" method="post">
                     <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
-                    <input type="submit" value="削除">
+                    <input type="submit" value="プラン更新・削除">
                 </form>
             </td>
         </tr>
