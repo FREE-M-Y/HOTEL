@@ -20,6 +20,15 @@ public class MemberController {
     MemberRepository memberRepository;
 
     @Autowired
+    HotelRepository hotelRepository;
+
+    @Autowired
+    PlanRepository planRepository;
+
+    @Autowired
+    PlanTypeRepository planTypeRepository;
+
+    @Autowired
     HttpSession session;
 
     // ログイン画面（login.html）表示用メソッド
@@ -55,9 +64,13 @@ public class MemberController {
             } else {
                 session.setAttribute("memberPass", member);
                 mv.addObject("member", session.getAttribute("memberPass"));
-                //List<Hotel> hotel = hotelRepository.findAll();
-                //mv.addObject("hotelList", hotel);
-                mv.setViewName("lodging");
+                List<Hotel> hotelList = hotelRepository.findAll();
+                List<Plan> planList = planRepository.findAll();
+                mv.addObject("planTypeList", planTypeRepository.findAll());
+                mv.addObject("hotelList", hotelList);
+                mv.addObject("planList", planList);
+                mv.addObject("member", member);
+                mv.setViewName("member");
             }
         }
 
@@ -254,6 +267,17 @@ public class MemberController {
                 mv.setViewName("admin");
             }
         }
+        return mv;
+    }
+
+    /***********一般者ログイン******************/
+    //memebr.html表示用メソッド
+    @RequestMapping("member")
+    public ModelAndView member(
+        ModelAndView mv ) {
+            mv.addObject("planList", planRepository.findAll());
+        mv.addObject("hotelList", hotelRepository.findAll());
+        mv.setViewName("member");
         return mv;
     }
 }

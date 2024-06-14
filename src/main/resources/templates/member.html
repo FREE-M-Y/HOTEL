@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>宿泊プラン一覧</title>
+</head>
+
+<body>
+
+    <p><a href="/">ログアウト</a></p>
+
+    <h1>ログインアカウント</h1>
+    <h2 th:text="${member.memberName}"></h2>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+
+    <form action="/findHotelPlan" method="POST">
+        <select name="serchCode">
+            <option value="0">会員ID</option>
+            <option value="1">会員名</option>
+            <option value="2">会員住所</option>
+        </select>
+        <input type="text" name="freeword">
+        <p><input type="submit" value="検索"></p>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>プランID</th><th>宿ID</th><th>宿名</th><th>プラン内容</th><th>金額</th><th>部屋数</th>
+            <th>削除年月日</th><th>備考</th>
+        </tr>
+        <tr th:each="plan:${planList}">
+            <td th:text="${plan.planId}"></td>
+            <td th:text="${plan.hotelId}"></td>
+            <td>
+                <span th:each="hotel:${hotelList}">
+                    <span th:if="${plan.hotelId == hotel.hotelId}" th:text="${hotel.hotelName}"></span>
+                </span>
+            </td>
+            <td>
+                <span th:each="planType:${planTypeList}">
+                    <span th:if="${plan.planTypeId == planType.planTypeId}" th:text="${planType.planName}"></span>
+                </span>
+            </td>
+            <td th:text="${plan.planPrice}"></td>
+            <td th:text="${plan.planRoomCount}"></td>
+            <td th:text="${plan.planDeleteDate}"></td>
+            <td th:text="${plan.planDescription}"></td>
+            <td>
+                <form action="/reservations" method="post">
+                    <input type="hidden" name="planId" th:value="${plan.planId}">
+                    <input type="hidden" name="memberId" th:value="${member.memberId}">
+                    <input type="submit" value="予約">
+                </form>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
