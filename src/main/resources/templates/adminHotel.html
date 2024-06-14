@@ -43,9 +43,8 @@
             <td th:text="${hotel.hotelCheckout}"></td>
                     <td>
                         <span th:each="plan:${planList}">
-                            <span th:if="${hotel.hotelId == plan.hotelId && #strings.isEmpty(plan.planDeleteDate)}"
-                                  th:text="${plan.planId}">
-                            </span><br>
+                            <span th:if="${hotel.hotelId == plan.hotelId && #strings.isEmpty(plan.planDeleteDate)}" th:text="${plan.planId + ','}">
+                            </span>
                         </span>
                     </td>
             <td>
