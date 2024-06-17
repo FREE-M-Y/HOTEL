@@ -13,7 +13,7 @@
 	<h1>会員情報変更</h1>
     <span style="color:red;" th:text="${errorMsg}"></span>
 
-    <form action="/updateM" method="POST">
+    <form action="/editM" method="POST">
         <p>
             名前：<input type="text" name="memberName" th:value="${member.memberName}">
         </p>
