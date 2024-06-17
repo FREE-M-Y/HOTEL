@@ -255,16 +255,36 @@ public class MemberController {
                 } else {
                     member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
                     memberRepository.save(member);
-                    mv.addObject("errorMsg", "更新が完了しました。");
-                    mv.addObject("memberList", memberRepository.findAll());
-                    mv.setViewName("admin");    
+
+                    if (memberId == 1){
+                        mv.addObject("errorMsg", "更新が完了しました。");
+                        mv.addObject("memberList", memberRepository.findAll());
+                        mv.setViewName("admin");
+                    } else {
+                        mv.addObject("errorMsg", "更新が完了しました。");
+                        mv.addObject("planTypeList", planTypeRepository.findAll());
+                        mv.addObject("hotelList", hotelRepository.findAll());
+                        mv.addObject("planList", planRepository.findAll());
+                        mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                        mv.setViewName("member");
+                    }
                 }
             } else {
                 member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
                 memberRepository.save(member);
-                mv.addObject("errorMsg", "更新が完了しました。");
-                mv.addObject("memberList", memberRepository.findAll());
-                mv.setViewName("admin");
+
+                if (memberId == 1){
+                    mv.addObject("errorMsg", "更新が完了しました。");
+                    mv.addObject("memberList", memberRepository.findAll());
+                    mv.setViewName("admin");
+                } else {
+                    mv.addObject("errorMsg", "更新が完了しました。");
+                    mv.addObject("planTypeList", planTypeRepository.findAll());
+                    mv.addObject("hotelList", hotelRepository.findAll());
+                    mv.addObject("planList", planRepository.findAll());
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                    mv.setViewName("member");
+                }
             }
         }
         return mv;
@@ -274,10 +294,26 @@ public class MemberController {
     //memebr.html表示用メソッド
     @RequestMapping("member")
     public ModelAndView member(
+        @RequestParam("memberId") int memberId,
         ModelAndView mv ) {
-            mv.addObject("planList", planRepository.findAll());
+        mv.addObject("planList", planRepository.findAll());
         mv.addObject("hotelList", hotelRepository.findAll());
+        mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+        mv.addObject("planTypeList", planTypeRepository.findAll());
         mv.setViewName("member");
+        return mv;
+    }
+
+    //editMember.html表示用メソッド
+    @RequestMapping("editMember")
+    public ModelAndView editMember(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        Member member = memberRepository.findByMemberId(memberId).get(0);
+        mv.addObject("member", member);
+        mv.setViewName("editMember");
+
         return mv;
     }
 }

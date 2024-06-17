@@ -3,19 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>宿泊プラン一覧</title>
+    <title>宿泊プラン予約</title>
 </head>
 
 <body>
-
-    <p><a href="/">ログアウト</a> <a href="/removeMember">退会</a></p>
+    <form action="member">
+        <input type="hidden" name="memberId" th:value="${member.memberId}">
+        <input type="submit" value="戻る">
+    </form>
 
     <h1>ログインアカウント</h1>
     <h2 th:text="${member.memberName}"></h2>
-    <form action="/editMember" method="post">
-        <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <input type="submit" value="会員情報変更">
-    </form>
     <span style="color:red;" th:text="${errorMsg}"></span>
 
     <br>
@@ -24,7 +22,7 @@
             <th>プランID</th><th>宿ID</th><th>宿名</th><th>プラン内容</th><th>金額</th><th>部屋数</th>
             <th>削除年月日</th><th>備考</th>
         </tr>
-        <tr th:each="plan:${planList}">
+        <tr>
             <td th:text="${plan.planId}"></td>
             <td th:text="${plan.hotelId}"></td>
             <td>
@@ -41,16 +39,24 @@
             <td th:text="${plan.planRoomCount}"></td>
             <td th:text="${plan.planDeleteDate}"></td>
             <td th:text="${plan.planDescription}"></td>
-            <td>
-                <form action="/reservations" method="post">
-                    <input type="hidden" name="planId" th:value="${plan.planId}">
-                    <input type="hidden" name="memberId" th:value="${member.memberId}">
-                    <input type="submit" value="予約">
-                </form>
-            </td>
         </tr>
     </table>
+    <form action="/addRsv" method="post">
+        <p>
+            チェックイン日時：<input type="text" name="rsvCheckin">
+        </p>
 
+        <p>
+            チェックアウト日時：<input type="text" name="rsvCheckout">
+        </p>
+
+        <p>
+            部屋数：<input type="number" name="rsvRoomCount" value="0">
+        </p>
+        <input type="hidden" name="planId" th:value="${plan.planId}">
+        <input type="hidden" name="memberId" th:value="${member.memberId}">
+        <input type="submit" value="予約">
+    </form>
 </body>
 
 </html>
