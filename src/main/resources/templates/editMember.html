@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>会員情報変更</title>
+</head>
+
+<body>
+    <form action="member">
+        <input type="hidden" name="memberId" th:value="${member.memberId}">
+        <input type="submit" value="戻る">
+    </form>
+	<h1>会員情報変更</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <form action="/editM" method="POST">
+        <p>
+            名前：<input type="text" name="memberName" th:value="${member.memberName}">
+        </p>
+
+        <p>
+            住所：<input type="text" name="memberAddress" th:value="${member.memberAddress}">
+        </p>
+
+        <p>
+            電話番号：<input type="tel" name="memberTel" th:value="${member.memberTel}">
+        </p>
+
+        <p>
+            メールアドレス：<input type="email" name="memberEmail" th:value="${member.memberEmail}">
+        </p>
+
+        <p>
+            誕生日：<input type="text" name="memberBirth" th:value="${member.memberBirth}">
+        </p>
+
+        <p>
+            パスワード：<input type="text" name="memberPass" th:value="${member.memberPass}">
+        </p>
+
+        <input type="hidden" name="memberId" th:value="${member.memberId}">
+        <input type="submit" value="更新">
+
+    </form>
+</body>
+</html>
