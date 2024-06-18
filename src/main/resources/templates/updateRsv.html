@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>予約変更</title>
+</head>
+
+<body>
+    <form action="editReservations">
+        <input type="hidden" name="memberId" th:value="${rsv.memberId}">
+        <input type="submit" value="戻る">
+    </form>
+
+    <h1>予約変更</h1>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <br>
+    <form action="/updateR" method="post">
+        <p>
+            チェックイン日時：<input type="text" name="rsvCheckin" th:value="${rsv.rsvCheckin}">
+        </p>
+
+        <p>
+            チェックアウト日時：<input type="text" name="rsvCheckout" th:value="${rsv.rsvCheckout}">
+        </p>
+
+        <p>
+            部屋数：<input type="number" name="rsvRoomCount" min="1" th:value="${rsv.rsvRoomCount}">
+        </p>
+        <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
+        <input type="submit" value="変更">
+    </form>
+</body>
+
+</html>

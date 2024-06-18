@@ -350,4 +350,34 @@ public class MemberController {
         }
         return mv;
     }
+
+    //deleteMember.html表示用メソッド
+    @RequestMapping("deleteMember")
+    public ModelAndView deleteMember(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+        mv.setViewName("deleteMember");
+
+        return mv;
+    }
+
+    //会員削除メソッド
+    @RequestMapping("deleteM")
+    public ModelAndView deleteM(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+
+        List<Member> member = memberRepository.findByMemberId(memberId);
+        Date date = new Date(); // 今日の日付
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        String strDate = dateFormat.format(date);
+        
+        member.get(0).setMemberWithdrawal(strDate);
+        memberRepository.save(member.get(0));
+
+        mv.setViewName("login");
+        return mv;
+    }
 }

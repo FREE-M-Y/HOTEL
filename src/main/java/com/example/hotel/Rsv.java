@@ -47,6 +47,12 @@ public class Rsv {
         this.rsvRoomCount = rsvRoomCount;
     }
 
+    public void setRsv(String rsvCheckin, String rsvCheckout, int rsvRoomCount) {
+        this.rsvCheckin = rsvCheckin;
+        this.rsvCheckout = rsvCheckout;
+        this.rsvRoomCount = rsvRoomCount;
+    }
+
     public int getRsvId() {
         return rsvId;
     }
