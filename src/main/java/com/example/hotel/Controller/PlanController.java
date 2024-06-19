@@ -1,4 +1,4 @@
-package com.example.hotel;
+package com.example.hotel.Controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,6 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.hotel.Repository.HotelRepository;
+import com.example.hotel.Repository.PlanRepository;
+import com.example.hotel.Repository.PlanTypeRepository;
+import com.example.hotel.entity.Plan;
+import com.example.hotel.entity.PlanType;
 
 @Controller
 public class PlanController {
