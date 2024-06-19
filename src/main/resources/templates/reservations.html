@@ -12,8 +12,7 @@
         <input type="submit" value="戻る">
     </form>
 
-    <h1>ログインアカウント</h1>
-    <h2 th:text="${member.memberName}"></h2>
+    <h1>宿泊プラン予約</h1>
     <span style="color:red;" th:text="${errorMsg}"></span>
 
     <br>
@@ -43,11 +42,11 @@
     </table>
     <form action="/addRsv" method="post">
         <p>
-            チェックイン日時：<input type="text" name="rsvCheckin">
+            チェックイン日：<input type="date" name="rsvCheckin">
         </p>
 
         <p>
-            チェックアウト日時：<input type="text" name="rsvCheckout">
+            チェックアウト日：<input type="date" name="rsvCheckout">
         </p>
 
         <p>

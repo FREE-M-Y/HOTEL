@@ -9,9 +9,10 @@
 <body>
 
     <p><a href="/">ログアウト</a></p>
+    <p>ログインアカウント：<a th:text="${member.memberName}"></a></p>
 
-    <h1>ログインアカウント</h1>
-    <h2 th:text="${member.memberName}"></h2>
+    <h1>宿泊プラン一覧</h1>
+    
     <div style="display:inline-flex">
         <form action="/editMember" method="post">
             <input type="hidden" name="memberId" th:value="${member.memberId}">
@@ -24,6 +25,10 @@
         <form action="/editReservations" method="post">
             <input type="hidden" name="memberId" th:value="${member.memberId}">
             <input type="submit" value="予約一覧">
+        </form>
+        <form action="/historyRsv" method="post">
+            <input type="hidden" name="memberId" th:value="${member.memberId}">
+            <input type="submit" value="予約履歴">
         </form>
     </div>
     <p> </p>

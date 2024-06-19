@@ -18,11 +18,11 @@
     <br>
     <form action="/updateR" method="post">
         <p>
-            チェックイン日時：<input type="text" name="rsvCheckin" th:value="${rsv.rsvCheckin}">
+            チェックイン日：<input type="date" name="rsvCheckin" th:value="${rsv.rsvCheckin}">
         </p>
 
         <p>
-            チェックアウト日時：<input type="text" name="rsvCheckout" th:value="${rsv.rsvCheckout}">
+            チェックアウト日：<input type="date" name="rsvCheckout" th:value="${rsv.rsvCheckout}">
         </p>
 
         <p>

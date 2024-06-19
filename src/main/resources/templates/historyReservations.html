@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>予約履歴</title>
+</head>
+
+<body>
+    <form action="member">
+        <input type="hidden" name="memberId" th:value="${memberId}">
+        <input type="submit" value="戻る">
+    </form>
+    <h1>予約履歴</h1>
+    
+    <p> </p>
+    <span style="color:red;" th:text="${errorMsg}"></span>
+
+    <table border="1">
+        <tr>
+            <th>宿名</th><th>チェックイン日</th><th>チェックアウト日</th>
+        </tr>
+        <tr th:each="rsv:${rsvList}">
+            <td>
+                <span th:each="plan:${planList}">
+                    <span th:if="${plan.planId == rsv.planId}" th:each="hotel:${hotelList}">
+                        <span th:if="${plan.hotelId == hotel.hotelId}" th:text="${hotel.hotelName}"></span>
+                    </span>
+            </span>
+            </td>
+            <td th:text="${rsv.rsvCheckin}"></td>
+            <td th:text="${rsv.rsvCheckout}"></td>
+
+        </tr>
+    </table>
+
+</body>
+
+</html>
