@@ -1,6 +1,7 @@
 package com.example.hotel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -192,6 +193,81 @@ public class RsvController {
             }
         }
 
+        return mv;
+    }
+
+    //cxlRsv.html表示用メソッド
+    @RequestMapping("cxlRsv")
+    public ModelAndView cxlRsv(
+        @RequestParam("rsvId") int rsvId,
+        ModelAndView mv ) {
+
+        mv.addObject("rsv", rsvRepository.findByRsvId(rsvId));
+        mv.setViewName("cxlRsv");
+
+        return mv;
+    }
+
+    //予約キャンセル用メソッド
+    @RequestMapping("cxlR")
+    public ModelAndView cxlR(
+        @RequestParam("rsvId") int rsvId,
+        ModelAndView mv ) {
+
+        Rsv rsv = rsvRepository.findByRsvId(rsvId);
+        Plan plan = planRepository.findByPlanId(rsv.getPlanId()).get(0);
+
+        int tempRsv = rsv.getRsvRoomCount();
+        int tempPlan = plan.getPlanRoomCount();
+        tempPlan = tempPlan + tempRsv;
+        plan.setEditPlan(plan.getPlanId(), plan.getPlanPrice(), tempPlan,
+                         plan.getPlanDeleteDate(), plan.getPlanDescription());
+        planRepository.save(plan);
+        rsvRepository.deleteByRsvId(rsvId);
+
+        mv.addObject("errorMsg", "予約をキャンセルしました。");
+        mv.addObject("memberId", rsv.getMemberId());
+        mv.addObject("rsvList", rsvRepository.findAll());
+        mv.setViewName("editReservations");
+
+        return mv;
+    }
+
+    //予約履歴用メソッド
+    @RequestMapping("historyRsv")
+    public ModelAndView historyRsv(
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv ) {
+        
+        List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+        List<Rsv> tempRsvlist = new ArrayList<Rsv>();
+        Date date = new Date(); // 今日の日付
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        
+        for (Rsv rsv:rsvList){
+            if (rsv.getRsvCheckout().compareTo(strDate) == -1) {
+                tempRsvlist.add(rsv);
+                
+                
+            } else {
+            }
+        }
+
+        if(tempRsvlist.size() != 0){
+            mv.addObject("memberId", memberId);
+            mv.addObject("planList", planRepository.findAll());
+            mv.addObject("hotelList", hotelRepository.findAll());
+            mv.addObject("rsvList", tempRsvlist);
+            mv.setViewName("historyReservations");
+        } else {
+            mv.addObject("errorMsg", "宿泊した宿はありません。");
+            mv.addObject("planList", planRepository.findAll());
+            mv.addObject("hotelList", hotelRepository.findAll());
+            mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+            mv.addObject("planTypeList", planTypeRepository.findAll());
+            mv.setViewName("member");
+        }
         return mv;
     }
 }

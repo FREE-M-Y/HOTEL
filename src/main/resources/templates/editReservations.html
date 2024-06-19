@@ -18,7 +18,7 @@
 
     <table border="1">
         <tr>
-            <th>プランID</th><th>チェックイン日時</th><th>チェックアウト日時</th><th>部屋数</th>
+            <th>プランID</th><th>チェックイン日</th><th>チェックアウト日</th><th>部屋数</th>
         </tr>
         <tr th:each="rsv:${rsvList}">
             <td th:text="${rsv.planId}"></td>
@@ -29,6 +29,12 @@
                 <form action="/updateRsv" method="post">
                     <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
                     <input type="submit" value="変更">
+                </form>
+            </td>
+            <td>
+                <form action="/cxlRsv" method="post">
+                    <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
+                    <input type="submit" value="キャンセル">
                 </form>
             </td>
         </tr>
