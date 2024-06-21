@@ -153,7 +153,7 @@ public class MemberController {
             mv.addObject("memberList", memberRepository.findAll());
             mv.setViewName("admin");
         } else {
-            mv.addObject("member", memberRepository.findByMemberId(memberId));
+            mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
             mv.setViewName("removeMember");
         }
         return mv;
