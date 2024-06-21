@@ -26,10 +26,23 @@
                     <span th:if="${plan.planId == rsv.planId}" th:each="hotel:${hotelList}">
                         <span th:if="${plan.hotelId == hotel.hotelId}" th:text="${hotel.hotelName}"></span>
                     </span>
-            </span>
+                </span>
             </td>
             <td th:text="${rsv.rsvCheckin}"></td>
             <td th:text="${rsv.rsvCheckout}"></td>
+            <td>
+                <form action="/review" method="post">
+                    <span th:each="plan:${planList}">
+                        <span th:if="${plan.planId == rsv.planId}" th:each="hotel:${hotelList}">
+                            <span th:if="${plan.hotelId == hotel.hotelId}">
+                                <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
+                            </span>
+                        </span>
+                    </span>
+                    <input type="hidden" name="memberId" th:value="${rsv.memberId}">
+                    <input type="submit" value="口コミ投稿">
+                </form>
+            </td>
 
         </tr>
     </table>

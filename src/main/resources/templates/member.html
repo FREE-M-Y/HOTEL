@@ -34,6 +34,15 @@
     <p> </p>
     <span style="color:red;" th:text="${errorMsg}"></span>
 
+    <form action="/findPlan" method="POST">
+        <select name="serchCode">
+            <option value="0">宿名</option>
+            <option value="1">プラン内容</option>
+        </select>
+        <input type="text" name="freeword">
+        <input type="hidden" name="memberId" th:value="${member.memberId}">
+        <p><input type="submit" value="検索"></p>
+    </form>
     <table border="1">
         <tr>
             <th>プランID</th><th>宿ID</th><th>宿名</th><th>プラン内容</th><th>金額</th><th>部屋数</th>

@@ -1,6 +1,7 @@
 package com.example.hotel.Controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +19,7 @@ import com.example.hotel.Repository.PlanTypeRepository;
 import com.example.hotel.entity.Hotel;
 import com.example.hotel.entity.Member;
 import com.example.hotel.entity.Plan;
+import com.example.hotel.entity.PlanType;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -386,6 +388,71 @@ public class MemberController {
         memberRepository.save(member.get(0));
 
         mv.setViewName("login");
+        return mv;
+    }
+
+    // 宿泊プラン検索メソッド
+    @RequestMapping("/findPlan")
+    public ModelAndView findPlan(
+        @RequestParam(name = "serchCode", defaultValue = "0") int serchCode,
+        @RequestParam("freeword") String freeWord,
+        @RequestParam("memberId") int memberId,
+        ModelAndView mv) {
+
+        if (freeWord.equals("")){
+            mv.addObject("planTypeList", planTypeRepository.findAll());
+            mv.addObject("hotelList", hotelRepository.findAll());
+            mv.addObject("planList", planRepository.findAll());
+            mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+        } else {
+            switch (serchCode) {
+            case 0:
+                List<Hotel> hotelList = hotelRepository.findByHotelNameLike("%"+freeWord+"%");
+                List<Plan> planList = new ArrayList<Plan>();
+                
+
+                if (hotelRepository.findByHotelNameLike("%"+freeWord+"%").size() != 0){
+                    mv.addObject("planTypeList", planTypeRepository.findAll());
+                    mv.addObject("hotelList", hotelRepository.findAll());
+                    
+                    for (Hotel hotel:hotelList) {
+                        planList = (planRepository.findByHotelId(hotel.getHotelId()));
+                    }
+                    mv.addObject("planList", planList);
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                } else {
+                    mv.addObject("errorMsg", "検索結果がありませんでした。");
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                }
+                break;
+            case 1:
+                List<PlanType> planTypeList = planTypeRepository.findByPlanNameLike("%"+freeWord+"%");
+                List<Plan> planListCase1 = new ArrayList<Plan>();
+
+                if (planTypeList.size() != 0){
+                    mv.addObject("planTypeList", planTypeRepository.findAll());
+                    mv.addObject("hotelList", hotelRepository.findAll());
+
+                    for (PlanType planType:planTypeList) {
+                        planListCase1 = (planRepository.findByPlanTypeId(planType.getPlanTypeId()));
+                    }
+                    mv.addObject("planList", planListCase1);
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                } else {
+                    mv.addObject("errorMsg", "検索結果がありませんでした。");
+                    mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                }
+                break;
+            default:
+                mv.addObject("planTypeList", planTypeRepository.findAll());
+                mv.addObject("hotelList", hotelRepository.findAll());
+                mv.addObject("planList", planRepository.findAll());
+                mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
+                break;
+            }
+        }
+
+        mv.setViewName("member");
         return mv;
     }
 }

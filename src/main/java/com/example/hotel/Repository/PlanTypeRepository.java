@@ -12,4 +12,5 @@ public interface PlanTypeRepository extends JpaRepository<PlanType, Integer> {
     
     List<PlanType> findByPlanTypeIdOrPlanName(int planTypeId, String planName);
     PlanType findByPlanName(String planName);
+    List<PlanType> findByPlanNameLike(String planName);
 }

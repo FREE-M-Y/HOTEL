@@ -11,4 +11,5 @@ import com.example.hotel.entity.Plan;
 public interface PlanRepository extends JpaRepository<Plan, Integer> {
     List<Plan> findByPlanId(int planId);
     List<Plan> findByHotelId(String hotelId);
+    List<Plan> findByPlanTypeId(int planTypeId);
 }
