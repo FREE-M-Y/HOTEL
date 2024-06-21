@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>予約キャンセル</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
 
     <form action="editReservations">
         <input type="hidden" name="memberId" th:value="${rsv.memberId}">
-        <input type="submit" value="戻る">
+        <input type="submit" value="戻る" class="button">
     </form>
 
     <h1>予約キャンセル</h1>
@@ -30,7 +31,7 @@
 
     <form action="/cxlR" method="post">
         <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
-        <input type="submit" value="キャンセル">
+        <input type="submit" value="キャンセル" class="button">
     </form>
 </body>
 

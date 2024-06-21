@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>管理者ログイン</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
@@ -28,7 +29,7 @@
             <td>
             <form action="/removeM" method="post">
                 <input type="hidden" name="memberId" th:value="${member.memberId}">
-                <input type="submit" value="退会">
+                <input type="submit" value="退会" class="button">
             </form>
             </td>
         </tr>

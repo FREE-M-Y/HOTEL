@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>管理者ログイン</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
 
-    <form action="editHotelPlan"><input type="submit" value="戻る">
+    <form action="editHotelPlan"><input type="submit" value="戻る" class="button">
         <input type="hidden" name="hotelId" th:value="${plan.hotelId}">
     </form>
 
@@ -33,7 +34,7 @@
             備考：<input type="text" name="planDescription" th:value="${plan.planDescription}">
         </p>
         <input type="hidden" name="planId" th:value="${plan.planId}">
-        <input type="submit" value="削除">
+        <input type="submit" value="削除" class="button">
     </form>
 
 </body>

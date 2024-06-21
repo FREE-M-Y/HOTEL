@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>退会</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
     <form action="member">
         <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <input type="submit" value="戻る">
+        <input type="submit" value="戻る" class="button">
     </form>
 
     <h1>退会</h1>
@@ -33,7 +34,7 @@
     <br>
     <form action="/deleteM" method="post">
         <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <input type="submit" value="退会">
+        <input type="submit" value="退会" class="button">
     </form>
 
 </body>

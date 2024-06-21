@@ -4,11 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>管理者ログイン</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
 
-    <form action="adminHotel"><input type="submit" value="戻る"></form>
+    <form action="adminHotel"><input type="submit" value="戻る" class="button"></form>
 
     <h1>宿泊プラン更新</h1>
     <span style="color:red;" th:text="${errorMsg}"></span>
@@ -28,13 +29,13 @@
             <td>
                 <form action="/updateHotelPlan" method="post">
                     <input type="hidden" name="planId" th:value="${plan.planId}">
-                    <input type="submit" value="変更">
+                    <input type="submit" value="変更" class="button">
                 </form>
             </td>
             <td>
                 <form action="/removeHotelPlan" method="post">
                     <input type="hidden" name="planId" th:value="${plan.planId}">
-                    <input type="submit" value="削除">
+                    <input type="submit" value="削除" class="button">
                 </form>
             </td>
         </tr>

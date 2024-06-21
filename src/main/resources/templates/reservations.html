@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>宿泊プラン予約</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
     <form action="member">
         <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <input type="submit" value="戻る">
+        <input type="submit" value="戻る" class="button">
     </form>
 
     <h1>宿泊プラン予約</h1>
@@ -54,7 +55,7 @@
         </p>
         <input type="hidden" name="planId" th:value="${plan.planId}">
         <input type="hidden" name="memberId" th:value="${member.memberId}">
-        <input type="submit" value="予約">
+        <input type="submit" value="予約" class="button">
     </form>
 </body>
 

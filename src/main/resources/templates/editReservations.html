@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>予約一覧</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
 
     <form action="member">
         <input type="hidden" name="memberId" th:value="${memberId}">
-        <input type="submit" value="戻る">
+        <input type="submit" value="戻る" class="button">
     </form>
 
     <h1>予約一覧</h1>
@@ -28,13 +29,13 @@
             <td>
                 <form action="/updateRsv" method="post">
                     <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
-                    <input type="submit" value="変更">
+                    <input type="submit" value="変更" class="button">
                 </form>
             </td>
             <td>
                 <form action="/cxlRsv" method="post">
                     <input type="hidden" name="rsvId" th:value="${rsv.rsvId}">
-                    <input type="submit" value="キャンセル">
+                    <input type="submit" value="キャンセル" class="button">
                 </form>
             </td>
         </tr>

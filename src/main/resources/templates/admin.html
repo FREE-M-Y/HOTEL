@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>管理者ログイン</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 
 <body>
@@ -21,7 +22,7 @@
             <option value="2">会員住所</option>
         </select>
         <input type="text" name="freeword">
-        <p><input type="submit" value="検索"></p>
+        <p><input type="submit" value="検索" class="button"></p>
     </form>
 
     <table border="1">
@@ -41,13 +42,13 @@
             <td>
                 <form action="/updateMember" method="post">
                     <input type="hidden" name="memberId" th:value="${member.memberId}">
-                    <input type="submit" value="更新">
+                    <input type="submit" value="更新" class="button">
                 </form>
             </td>
             <td>
                 <form action="/removeMember" method="post">
                     <input type="hidden" name="memberId" th:value="${member.memberId}">
-                    <input type="submit" value="削除">
+                    <input type="submit" value="削除" class="button">
                 </form>
             </td>
         </tr>

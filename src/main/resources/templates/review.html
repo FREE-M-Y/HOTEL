@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>口コミ</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 <body>
     <form action="member">
         <input type="hidden" name="memberId" th:value="${memberId}">
-        <input type="submit" value="戻る">
+        <input type="submit" value="戻る" class="button">
     </form>
 
     <span style="color:red;" th:text="${errorMsg}"></span>
@@ -22,7 +23,7 @@
     </p>
     <input type="hidden" name="hotelId" th:value="${hotel.hotelId}">
     <input type="hidden" name="memberId" th:value="${memberId}">
-    <input type="submit" value="登録">
+    <input type="submit" value="登録" class="button">
 
     </form>
 

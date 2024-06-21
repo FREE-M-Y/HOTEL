@@ -3,9 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>管理者ログイン</title>
+    <link th:href="@{../css/style.css}" rel="stylesheet"></link>
 </head>
 <body>
-    <form action="adminHotel"><input type="submit" value="戻る"></form>
+    <form action="adminHotel"><input type="submit" value="戻る" class="button"></form>
 
 	<h1>宿情報更新</h1>
 
@@ -35,7 +36,7 @@
     <p>
         チェックアウト時間：<input type="text" name="hotelCheckout" th:value="${hotel.hotelCheckout}">
     </p>
-    <input type="submit" value="更新">
+    <input type="submit" value="更新" class="button">
 
     </form>
 </body>
