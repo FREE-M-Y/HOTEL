@@ -39,12 +39,16 @@ public class Member {
     @Column(name = "member_password")
     private String memberPass;
 
+    @Column(name = "member_rank")
+    private String memberRank;
+
     public Member() {
 
     }
 
     public Member(String memberName, String memberAddress, String memberTel,
-                  String memberEmail, String memberBirth, String memberJoin, String memberPass) {
+                  String memberEmail, String memberBirth, String memberJoin, String memberPass,
+                  String memberRank) {
         this.memberName = memberName;
         this.memberAddress = memberAddress;
         this.memberTel = memberTel;
@@ -52,6 +56,7 @@ public class Member {
         this.memberBirth = memberBirth;
         this.memberJoin = memberJoin;
         this.memberPass = memberPass;
+        this.memberRank = memberRank;
     }
 
     public void setUpdateMember(String memberName, String memberAddress, String memberTel,
@@ -66,6 +71,10 @@ public class Member {
 
     public void setMemberWithdrawal(String memberWithdrawal) {
         this.memberWithdrawal = memberWithdrawal;
+    }
+
+    public void setMemberRank( String memberRank) {
+        this.memberRank = memberRank;
     }
 
     public int getMemberId() {
@@ -102,5 +111,9 @@ public class Member {
 
     public String getMemberPass() {
         return memberPass;
+    }
+
+    public String getMemberRank() {
+        return memberRank;
     }
 }

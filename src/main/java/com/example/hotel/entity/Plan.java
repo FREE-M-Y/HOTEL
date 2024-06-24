@@ -30,6 +30,9 @@ public class Plan {
     @Column(name = "plan_description")
     private String planDescription;
 
+    @Column(name = "plan_member_price")
+    private int planMemberPrice;
+
     public Plan() {
 
     }
@@ -43,6 +46,7 @@ public class Plan {
         this.planRoomCount = planRoomCount;
         this.planDeleteDate = planDeleteDate;
         this.planDescription = planDescription;
+        this.planMemberPrice = planPrice;
     }
 
     public void setEditPlan(int planTypeId, int planPrice, int planRoomCount,
@@ -57,6 +61,10 @@ public class Plan {
     public void setPlanDeleteDate(String planDeleteDate, String planDescription) {
         this.planDeleteDate = planDeleteDate;
         this.planDescription = planDescription;
+    }
+
+    public void setPlanMemberPrice(int planMemberPrice) {
+        this.planMemberPrice = planMemberPrice;
     }
 
     public int getPlanId() {
@@ -85,5 +93,9 @@ public class Plan {
 
     public String getPlanDescription() {
         return planDescription;
+    }
+
+    public int getPlanMemberPrice() {
+        return planMemberPrice;
     }
 }

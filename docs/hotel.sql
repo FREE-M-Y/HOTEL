@@ -24,6 +24,7 @@ member_birth VARCHAR(20) NOT NULL,
 member_join VARCHAR(20) NOT NULL,
 member_withdrawal VARCHAR(20),
 member_password VARCHAR(50) NOT NULL,
+member_rank VARCHAR(10) NOT NULL,
 PRIMARY KEY (member_id)
 );
 
@@ -35,6 +36,7 @@ plan_price int,
 plan_room_count int,
 plan_dalete_date VARCHAR(15),
 plan_description VARCHAR(100),
+plan_member_price int NOT NULL,
 PRIMARY KEY (plan_id),
 FOREIGN KEY(hotel_id)
 REFERENCES hotel(hotel_id),

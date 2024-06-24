@@ -16,10 +16,12 @@ import com.example.hotel.Repository.HotelRepository;
 import com.example.hotel.Repository.MemberRepository;
 import com.example.hotel.Repository.PlanRepository;
 import com.example.hotel.Repository.PlanTypeRepository;
+import com.example.hotel.Repository.RsvRepository;
 import com.example.hotel.entity.Hotel;
 import com.example.hotel.entity.Member;
 import com.example.hotel.entity.Plan;
 import com.example.hotel.entity.PlanType;
+import com.example.hotel.entity.Rsv;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -37,6 +39,9 @@ public class MemberController {
 
     @Autowired
     PlanTypeRepository planTypeRepository;
+
+    @Autowired
+    RsvRepository rsvRepository;
 
     @Autowired
     HttpSession session;
@@ -76,6 +81,10 @@ public class MemberController {
                 mv.addObject("member", session.getAttribute("memberPass"));
                 List<Hotel> hotelList = hotelRepository.findAll();
                 List<Plan> planList = planRepository.findAll();
+                List<Rsv> rsvList = rsvRepository.findByMemberId(member.getMemberId());
+        
+                calcMemberPrice(member, rsvList, planList);
+                memberRepository.save(member);
                 mv.addObject("planTypeList", planTypeRepository.findAll());
                 mv.addObject("hotelList", hotelList);
                 mv.addObject("planList", planList);
@@ -117,7 +126,7 @@ public class MemberController {
             mv.addObject("errorMsg", "メールアドレスが既に登録されています。");
         } else {
             memberRepository.save(new Member(memberName, memberAddress, memberTel,
-                                            memberEmail, memberBirth, strDate, memberPass));
+                                            memberEmail, memberBirth, strDate, memberPass, "Bronze"));
             mv.addObject("member", memberRepository.findAll());
             mv.addObject("addOk", "新規登録が完了しました。");
         }
@@ -288,6 +297,14 @@ public class MemberController {
     public ModelAndView member(
         @RequestParam("memberId") int memberId,
         ModelAndView mv ) {
+
+        List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+        Member member = memberRepository.findByMemberId(memberId).get(0);
+        List<Plan> planList = planRepository.findAll();
+
+        calcMemberPrice(member, rsvList, planList);
+        memberRepository.save(member);
+        
         mv.addObject("planList", planRepository.findAll());
         mv.addObject("hotelList", hotelRepository.findAll());
         mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
@@ -339,6 +356,12 @@ public class MemberController {
                     member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
                     memberRepository.save(member);
 
+                    List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+                    List<Plan> planList = planRepository.findAll();
+            
+                    calcMemberPrice(member, rsvList, planList);
+                    memberRepository.save(member);
+
                     mv.addObject("errorMsg", "更新が完了しました。");
                     mv.addObject("planTypeList", planTypeRepository.findAll());
                     mv.addObject("hotelList", hotelRepository.findAll());
@@ -348,6 +371,12 @@ public class MemberController {
                 }
             } else {
                 member.setUpdateMember(memberName, memberAddress, memberTel, memberEmail, memberBirth, memberPass);
+                memberRepository.save(member);
+
+                List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+                List<Plan> planList = planRepository.findAll();
+        
+                calcMemberPrice(member, rsvList, planList);
                 memberRepository.save(member);
 
                 mv.addObject("errorMsg", "更新が完了しました。");
@@ -452,7 +481,48 @@ public class MemberController {
             }
         }
 
+        List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+        Member member = memberRepository.findByMemberId(memberId).get(0);
+        List<Plan> planList = planRepository.findAll();
+
+        calcMemberPrice(member, rsvList, planList);
+        memberRepository.save(member);
+
         mv.setViewName("member");
         return mv;
+    }
+
+    public static void calcMemberPrice(Member member, List<Rsv> rsvList, List<Plan> planList){
+        
+        List<Rsv> tempRsvlist = new ArrayList<Rsv>();
+        Date date = new Date(); // 今日の日付
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        double discount;
+        
+        for (Rsv rsv:rsvList){
+            if (rsv.getRsvCheckout().compareTo(strDate) < 0) {
+                tempRsvlist.add(rsv);
+            } else {
+            }
+        }
+
+        if (tempRsvlist.size() <= 9) {
+            member.setMemberRank("Bronze");
+            discount = 1.0;
+        } else if (tempRsvlist.size() <= 19) {
+            member.setMemberRank("Silver");
+            discount = 0.95;
+        } else if (tempRsvlist.size() <= 29) {
+            member.setMemberRank("Gold");
+            discount = 0.90;
+        } else {
+            member.setMemberRank("Platinum");
+            discount = 0.85;
+        }
+
+        for (Plan plan:planList) {
+            plan.setPlanMemberPrice((int)((double)plan.getPlanPrice() * discount));
+        }
     }
 }

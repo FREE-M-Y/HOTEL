@@ -16,6 +16,7 @@ import com.example.hotel.Repository.MemberRepository;
 import com.example.hotel.Repository.PlanRepository;
 import com.example.hotel.Repository.PlanTypeRepository;
 import com.example.hotel.Repository.RsvRepository;
+import com.example.hotel.entity.Member;
 import com.example.hotel.entity.Plan;
 import com.example.hotel.entity.Rsv;
 
@@ -88,11 +89,18 @@ public class RsvController {
 
             tempPlan = tempPlan - rsvRoomCount;
 
-            plan.setEditPlan(plan.getPlanId(), plan.getPlanPrice(), tempPlan,
+            plan.setEditPlan(plan.getPlanTypeId(), plan.getPlanPrice(), tempPlan,
                              plan.getPlanDeleteDate(), plan.getPlanDescription());
             planRepository.save(plan);
             rsvRepository.save(new Rsv(memberId, planId, strDate, rsvCheckin, rsvCheckout,
                                        rsvRoomCount));
+
+            List<Rsv> rsvList = rsvRepository.findByMemberId(memberId);
+            Member member = memberRepository.findByMemberId(memberId).get(0);
+            List<Plan> planList = planRepository.findAll();
+
+            calcMemberPrice(member, rsvList, planList);
+            memberRepository.save(member);
             
             mv.addObject("errorMsg", "予約が完了しました。");
             mv.addObject("planList", planRepository.findAll());
@@ -117,6 +125,13 @@ public class RsvController {
             mv.addObject("hotelList", hotelRepository.findAll());
             mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
             mv.addObject("planTypeList", planTypeRepository.findAll());
+
+            Member member = memberRepository.findByMemberId(memberId).get(0);
+            List<Plan> planList = planRepository.findAll();
+    
+            calcMemberPrice(member, rsvList, planList);
+            memberRepository.save(member);
+
             mv.setViewName("member");
         } else {
             mv.addObject("memberId", memberId);
@@ -254,10 +269,8 @@ public class RsvController {
         String strDate = dateFormat.format(date);
         
         for (Rsv rsv:rsvList){
-            if (rsv.getRsvCheckout().compareTo(strDate) == -1) {
+            if (rsv.getRsvCheckout().compareTo(strDate) < 0) {
                 tempRsvlist.add(rsv);
-                
-                
             } else {
             }
         }
@@ -274,8 +287,49 @@ public class RsvController {
             mv.addObject("hotelList", hotelRepository.findAll());
             mv.addObject("member", memberRepository.findByMemberId(memberId).get(0));
             mv.addObject("planTypeList", planTypeRepository.findAll());
+
+            Member member = memberRepository.findByMemberId(memberId).get(0);
+            List<Plan> planList = planRepository.findAll();
+    
+            calcMemberPrice(member, rsvList, planList);
+            memberRepository.save(member);
+
             mv.setViewName("member");
         }
         return mv;
+    }
+
+    public static void calcMemberPrice(Member member, List<Rsv> rsvList, List<Plan> planList){
+        
+        List<Rsv> tempRsvlist = new ArrayList<Rsv>();
+        Date date = new Date(); // 今日の日付
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String strDate = dateFormat.format(date);
+        double discount;
+        
+        for (Rsv rsv:rsvList){
+            if (rsv.getRsvCheckout().compareTo(strDate) < 0) {
+                tempRsvlist.add(rsv);
+            } else {
+            }
+        }
+
+        if (tempRsvlist.size() <= 9) {
+            member.setMemberRank("Bronze");
+            discount = 1.0;
+        } else if (tempRsvlist.size() <= 19) {
+            member.setMemberRank("Silver");
+            discount = 0.95;
+        } else if (tempRsvlist.size() <= 29) {
+            member.setMemberRank("Gold");
+            discount = 0.90;
+        } else {
+            member.setMemberRank("Platinum");
+            discount = 0.85;
+        }
+
+        for (Plan plan:planList) {
+            plan.setPlanMemberPrice((int)((double)plan.getPlanPrice() * discount));
+        }
     }
 }
