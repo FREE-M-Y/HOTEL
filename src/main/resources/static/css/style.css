@@ -2,7 +2,10 @@ body{
     width: 100%;
     max-width: 1280px;
     margin: auto;
-    background: linear-gradient(to bottom, #ccffe5, #c0fac8);
+    /*background: linear-gradient(to bottom, #ccffe5, #c0fac8);*/
+    background: url(../img/Background.png) no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(6px);
 }
 
 .example input:first-of-type{
@@ -13,8 +16,9 @@ body{
 }
 
 h1 {
-    color: #13a0f1;/*文字色*/
-    border: solid 3px #13a0f1;/*線色*/
+    color: #ffffff;/*文字色*/
+    border: solid 3px #6666ff;/*線色*/
+    background: #6666ff;/*背景*/
     padding: 0.5em;/*文字周りの余白*/
     border-radius: 0.5em;/*角丸*/
 }
@@ -51,5 +55,9 @@ table{
   }
   
   table tr:nth-child(even){
-    background-color: #eee
+    background-color: rgba(255,255,255,0.8)
+  }
+  
+  table tr:nth-child(odd){
+    background-color: rgba(198,255,165,0.5)
   }
